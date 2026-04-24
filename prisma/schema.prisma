@@ -1,0 +1,115 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum SourceType {
+  AGENT_GENERATED
+  HUMAN_GENERATED
+  HYBRID
+  SYNTHETIC
+}
+
+enum VerificationStatus {
+  PREVIEW_BOUNDARY_ENFORCED
+  SCHEMA_REVIEWED
+  HUMAN_REVIEWED
+}
+
+model User {
+  id              String            @id @default(cuid())
+  walletAddress   String            @unique
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  supplierProfile SupplierProfile?
+  purchases       Purchase[]
+  accessGrants    AccessGrant[]
+}
+
+model SupplierProfile {
+  id                String         @id @default(cuid())
+  userId            String         @unique
+  baseWalletAddress String
+  listingCount      Int            @default(0)
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  user              User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  listings          TraceListing[]
+}
+
+model TraceListing {
+  id                 String             @id @default(cuid())
+  supplierProfileId  String?
+  slug               String             @unique
+  title              String
+  description        String
+  domain             String
+  taskType           String
+  sourceType         SourceType
+  verificationStatus VerificationStatus
+  priceUsd           Decimal
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  supplierProfile    SupplierProfile?   @relation(fields: [supplierProfileId], references: [id], onDelete: SetNull)
+  tools              ListingTool[]
+  asset              TraceAsset?
+  purchases          Purchase[]
+
+  @@index([domain, taskType])
+  @@index([sourceType, verificationStatus])
+}
+
+model ListingTool {
+  id        String       @id @default(cuid())
+  listingId String
+  value     String
+  listing   TraceListing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@index([value])
+}
+
+model TraceAsset {
+  id                String       @id @default(cuid())
+  listingId         String       @unique
+  storageKey        String
+  samplePreview     String
+  formatVersion     String
+  sourceType        SourceType
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  listing           TraceListing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  accessGrants      AccessGrant[]
+}
+
+model Purchase {
+  id                  String        @id @default(cuid())
+  buyerId             String
+  listingId           String
+  amountUsd           Decimal
+  paymentTxHash       String        @unique
+  createdAt           DateTime      @default(now())
+  buyer               User          @relation(fields: [buyerId], references: [id], onDelete: Cascade)
+  listing             TraceListing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  accessGrants        AccessGrant[]
+
+  @@index([buyerId, createdAt])
+}
+
+model AccessGrant {
+  id         String      @id @default(cuid())
+  purchaseId String
+  buyerId    String
+  assetId    String
+  grantedAt  DateTime    @default(now())
+  expiresAt  DateTime
+  purchase   Purchase    @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
+  buyer      User        @relation(fields: [buyerId], references: [id], onDelete: Cascade)
+  asset      TraceAsset  @relation(fields: [assetId], references: [id], onDelete: Cascade)
+
+  @@index([buyerId, expiresAt])
+  @@index([assetId, expiresAt])
+}
