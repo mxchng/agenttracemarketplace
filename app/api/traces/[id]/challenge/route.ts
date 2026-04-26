@@ -19,7 +19,7 @@ export async function GET(_: Request, { params }: RouteProps) {
     amountAtomic: listing.priceAtomic,
     amountUsd: listing.priceUsd,
     resource: {
-      url: `https://agenttracemarketplace.local/listings/${listing.id}`,
+      url: `https://tracer.local/listings/${listing.id}`,
       description: listing.title,
       mimeType: "application/json",
     },

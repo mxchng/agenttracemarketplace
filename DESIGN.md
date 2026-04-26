@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This document is the design source of truth for the buyer-first MVP of `agenttracemarketplace`.
+This document is the design source of truth for the buyer-first MVP of `Tracer`.
 
 It exists to keep implementation coherent across the homepage, marketplace, listing detail, and buyer purchases surfaces. If a design choice is not specified elsewhere, default to the principles and tokens in this file instead of improvising.
 

@@ -11,7 +11,7 @@ export async function SiteHeader() {
       <div className="site-header__inner">
         <div className="brand-mark">
           <Link className="brand-mark__title" href="/">
-            agenttracemarketplace
+            Tracer
           </Link>
           <span className="brand-mark__subtitle">
             Buyer-first MVP for agent training traces
