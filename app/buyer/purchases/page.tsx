@@ -1,7 +1,10 @@
+import { requireWalletSession } from "@/lib/auth/session";
 import { SiteHeader } from "@/components/site-header";
 import { samplePurchases } from "@/lib/data/mock-data";
 
-export default function BuyerPurchasesPage() {
+export default async function BuyerPurchasesPage() {
+  const session = await requireWalletSession();
+
   return (
     <div className="page-shell">
       <SiteHeader />
@@ -10,8 +13,8 @@ export default function BuyerPurchasesPage() {
           <span className="eyebrow">Buyer library</span>
           <h1 className="page-title">Purchased trace bundles should feel owned.</h1>
           <p className="section-copy">
-            This scaffold treats purchases as a reusable library, not a dead receipt
-            page.
+            Signed in as {session.walletAddress}. This buyer-first scaffold treats
+            purchases as a reusable library, not a dead receipt page.
           </p>
         </div>
         <section className="purchases-list">

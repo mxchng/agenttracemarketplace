@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { BaseWalletButton } from "@/components/base-wallet-button";
+import { getOptionalWalletSession } from "@/lib/auth/session";
 import { baseAppChainLabel } from "@/lib/base/chain";
 
-export function SiteHeader() {
+export async function SiteHeader() {
+  const session = await getOptionalWalletSession();
+
   return (
     <header className="site-header">
       <div className="site-header__inner">
@@ -18,7 +21,7 @@ export function SiteHeader() {
           <Link href="/marketplace">Browse marketplace</Link>
           <Link href="/buyer/purchases">Purchases</Link>
           <span className="status-chip">{baseAppChainLabel}</span>
-          <BaseWalletButton />
+          <BaseWalletButton currentSessionWalletAddress={session?.walletAddress ?? null} />
         </nav>
       </div>
     </header>
