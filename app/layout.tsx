@@ -3,7 +3,7 @@ import { BaseProvider } from "@/components/providers/base-provider";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "agenttracemarketplace",
+  title: "Tracer",
   description: "Base-native marketplace for agent training traces.",
 };
 

@@ -16,7 +16,7 @@ export const wagmiConfig = createConfig({
   connectors: [
     injected(),
     coinbaseWallet({
-      appName: "agenttracemarketplace",
+      appName: "Tracer",
       // The current custom x402 flow relies on direct typed-data signing.
       // Defaulting to an EOA wallet avoids Smart Wallet request-handling issues here.
       preference: coinbaseWalletPreference,

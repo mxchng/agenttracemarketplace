@@ -132,7 +132,7 @@ export function buildAuthMessage(challenge: NonceChallenge) {
     `${challenge.domain} wants you to sign in with your Base wallet:`,
     challenge.walletAddress,
     "",
-    "Sign this message to create an app session for agenttracemarketplace.",
+    "Sign this message to create an app session for Tracer.",
     "",
     `URI: ${challenge.uri}`,
     "Version: 1",
