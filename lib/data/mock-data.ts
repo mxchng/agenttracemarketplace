@@ -10,6 +10,8 @@ export type ListingSummary = {
   verificationStatus: string;
   verificationToneClass: string;
   priceLabel: string;
+  priceUsd: string;
+  priceAtomic: string;
   previewHook: string;
   accessTermLabel: string;
 };
@@ -28,6 +30,8 @@ export const sampleListings: ListingSummary[] = [
     verificationStatus: "Schema reviewed",
     verificationToneClass: "status-chip--verified",
     priceLabel: "$5 / batch",
+    priceUsd: "5.00",
+    priceAtomic: "5000000",
     previewHook: "3-step excerpt shows navigation, tool choice, and completion path",
     accessTermLabel: "30-day access term",
   },
@@ -44,6 +48,8 @@ export const sampleListings: ListingSummary[] = [
     verificationStatus: "Preview boundary enforced",
     verificationToneClass: "status-chip--verified",
     priceLabel: "$8 / batch",
+    priceUsd: "8.00",
+    priceAtomic: "8000000",
     previewHook: "Preview exposes step labels and tool names, not source payloads",
     accessTermLabel: "Download on demand",
   },

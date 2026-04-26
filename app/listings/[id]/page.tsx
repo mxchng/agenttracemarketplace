@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ListingPurchaseBox } from "@/components/listing-purchase-box";
+import { getOptionalWalletSession } from "@/lib/auth/session";
 import { SiteHeader } from "@/components/site-header";
 import { baseAppChainLabel } from "@/lib/base/chain";
 import { sampleListings } from "@/lib/data/mock-data";
@@ -11,6 +13,7 @@ type ListingDetailPageProps = {
 export default async function ListingDetailPage({
   params,
 }: ListingDetailPageProps) {
+  const session = await getOptionalWalletSession();
   const { id } = await params;
   const listing = sampleListings.find((item) => item.id === id);
 
@@ -100,32 +103,11 @@ export default async function ListingDetailPage({
               Stable purchase states matter more than flashy wallet choreography,
               even when the wallet flow is rooted in {baseAppChainLabel}.
             </p>
-            <div className="stack">
-              <div className="preview-step">
-                <strong>Not signed in</strong>
-                <span className="muted-copy">
-                  Connect wallet to create an app session.
-                </span>
-              </div>
-              <div className="preview-step">
-                <strong>Purchase pending</strong>
-                <span className="muted-copy">
-                  Show one calm state while payment and grant creation resolve.
-                </span>
-              </div>
-              <div className="preview-step">
-                <strong>Session expired</strong>
-                <span className="muted-copy">
-                  Re-authenticate without losing listing context.
-                </span>
-              </div>
-            </div>
-            <div className="button-row">
-              <Link className="button-link" href="/buyer/purchases">
-                View buyer library states
-              </Link>
-              <span className="button-link--secondary">Mock purchase flow</span>
-            </div>
+            <ListingPurchaseBox
+              currentSessionWalletAddress={session?.walletAddress ?? null}
+              listingId={listing.id}
+              priceLabel={listing.priceLabel}
+            />
           </aside>
         </section>
       </main>

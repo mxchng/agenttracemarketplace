@@ -17,14 +17,26 @@ export type PurchaseReceipt = {
 export class PurchaseService {
   constructor(private readonly verifier: IPaymentVerifier) {}
 
-  async createHumanPurchase(intent: PurchaseIntent): Promise<PurchaseReceipt> {
+  async createHumanPurchase(
+    intent: PurchaseIntent,
+    request: Request,
+  ): Promise<PurchaseReceipt & { mode: string; settlement?: Record<string, unknown> }> {
     const listing = sampleListings.find((item) => item.id === intent.listingId);
 
     if (!listing) {
       throw new Error("Listing not found.");
     }
 
-    const payment = await this.verifier.verify(new Request("https://example.invalid"));
+    const payment = await this.verifier.verify(request, {
+      listingId: listing.id,
+      amountAtomic: listing.priceAtomic,
+      amountUsd: listing.priceUsd,
+      resource: {
+        url: `https://agenttracemarketplace.local/listings/${listing.id}`,
+        description: listing.title,
+        mimeType: "application/json",
+      },
+    });
 
     return {
       listingId: listing.id,
@@ -33,6 +45,8 @@ export class PurchaseService {
         Date.now() + 30 * 24 * 60 * 60 * 1000,
       ).toISOString(),
       accessState: "active",
+      mode: payment.mode,
+      settlement: payment.settlement,
     };
   }
 }
