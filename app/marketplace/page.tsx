@@ -1,8 +1,10 @@
 import { ListingCard } from "@/components/listing-card";
 import { SiteHeader } from "@/components/site-header";
-import { sampleListings } from "@/lib/data/mock-data";
+import { getAllListings } from "@/lib/data/listings";
 
-export default function MarketplacePage() {
+export default async function MarketplacePage() {
+  const listings = await getAllListings();
+
   return (
     <div className="page-shell">
       <SiteHeader />
@@ -43,7 +45,7 @@ export default function MarketplacePage() {
             </p>
           </aside>
           <section className="catalog-list" aria-label="Listings">
-            {sampleListings.map((listing) => (
+            {listings.map((listing) => (
               <ListingCard key={listing.id} listing={listing} />
             ))}
           </section>

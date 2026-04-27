@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { SiteHeader } from "@/components/site-header";
 import { baseAppChainLabel } from "@/lib/base/chain";
-import { sampleListings } from "@/lib/data/mock-data";
+import { getAllListings } from "@/lib/data/listings";
 
-export default function HomePage() {
-  const featured = sampleListings[0];
+export default async function HomePage() {
+  const listings = await getAllListings();
+  const featured = listings[0];
 
   return (
     <div className="page-shell">

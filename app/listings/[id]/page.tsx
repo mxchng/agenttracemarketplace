@@ -4,7 +4,7 @@ import { ListingPurchaseBox } from "@/components/listing-purchase-box";
 import { getOptionalWalletSession } from "@/lib/auth/session";
 import { SiteHeader } from "@/components/site-header";
 import { baseAppChainLabel } from "@/lib/base/chain";
-import { sampleListings } from "@/lib/data/mock-data";
+import { getListingBySlug } from "@/lib/data/listings";
 
 type ListingDetailPageProps = {
   params: Promise<{ id: string }>;
@@ -15,7 +15,7 @@ export default async function ListingDetailPage({
 }: ListingDetailPageProps) {
   const session = await getOptionalWalletSession();
   const { id } = await params;
-  const listing = sampleListings.find((item) => item.id === id);
+  const listing = await getListingBySlug(id);
 
   if (!listing) {
     notFound();

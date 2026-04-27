@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { sampleListings } from "@/lib/data/mock-data";
+import { getListingBySlug } from "@/lib/data/listings";
 
 type RouteProps = {
   params: Promise<{ id: string }>;
@@ -7,7 +7,7 @@ type RouteProps = {
 
 export async function GET(_: Request, { params }: RouteProps) {
   const { id } = await params;
-  const listing = sampleListings.find((item) => item.id === id);
+  const listing = await getListingBySlug(id);
 
   if (!listing) {
     return NextResponse.json({ error: "Listing not found." }, { status: 404 });
