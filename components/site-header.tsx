@@ -20,6 +20,7 @@ export async function SiteHeader() {
         <nav aria-label="Primary" className="nav-links">
           <Link href="/marketplace">Browse marketplace</Link>
           <Link href="/buyer/purchases">Purchases</Link>
+          <Link href="/supplier/listings">Supplier</Link>
           <span className="status-chip">{baseAppChainLabel}</span>
           <BaseWalletButton currentSessionWalletAddress={session?.walletAddress ?? null} />
         </nav>
